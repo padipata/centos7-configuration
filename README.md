@@ -5,7 +5,7 @@
 sudo -i
 
 // 连接
-ssh root@39.104.92.85
+ssh root@xxx.xxx.xxx.xxx
 ```
 
 ### 修复 wget 漏洞
@@ -43,8 +43,8 @@ cd lnmp1.4
 2. 阿里的ca证书有一个 pem 文件和 key 文件，解压后，分别把名字改为 'ssl.pem'，'ssl.key'
 
 3. Mac将本地文件上传到服务器上（在服务器中新建 /home/ssl 文件夹）
- root >>  scp -P 22 /Users/Mr.peng/Downloads/214577254120798/ssl.key root@39.104.92.85:/home/ssl
- root >>  scp -P 22 /Users/Mr.peng/Downloads/214577254120798/ssl.pem root@39.104.92.85:/home/ssl
+ root >>  scp -P 22 /Users/Mr.peng/Downloads/214577254120798/ssl.key root@xxx.xxx.xxx.xxx:/home/ssl
+ root >>  scp -P 22 /Users/Mr.peng/Downloads/214577254120798/ssl.pem root@xxx.xxx.xxx.xxx:/home/ssl
 
 4. 当后期若需证书改名
 root >> cd /home/ssl
@@ -81,9 +81,8 @@ lnmp 默认网站配置文件：/usr/local/apache/conf/extra/httpd-vhosts.conf
 ```
 
 ### 修改 nginx 配置
-![53648748.png](CentOS 7 服务器配置_files/53648748.png)
-![53887871.png](CentOS 7 服务器配置_files/53887871.png)
-
+![](files/53648748.png)
+![](files/53887871.png)
 
 
 
