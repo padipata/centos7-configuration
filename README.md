@@ -214,3 +214,20 @@ sudo gitlab-ctl tail
 # 停止相关数据连接服务 
 gitlab-ctl stop unicorn gitlab-ctl stop sidekiq
 ```
+### 完全卸载 gitlab
+```shell
+# 停止进程
+sudo gitlab-ctl stop
+
+# 卸载（卸载掉ce || ee, 看情况而定）
+rpm -e gitlab-ce
+
+# 查看gitlab进程
+ps aux | grep gitlab
+
+# 杀掉进程（后面很多个点的那个进程）
+kill -9 18777
+
+# 杀掉所有 gitlab 有关的文件
+find / -name gitlab | xargs rm -rf
+```
