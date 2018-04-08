@@ -190,6 +190,27 @@ vim /var/opt/gitlab/gitlab-rails/etc/gitlab.yml
 // 开启
 sudo gitlab-ctl start
 
-// 允许9090端口访问
-sudo firewall-cmd --permanent --zone=public --add-port=9090/tcp
+# 允许4000端口访问
+sudo firewall-cmd --permanent --zone=public --add-port=4000/tcp
+```
+
+### 常用 gitlab 命令
+```shell
+# 重新应用gitlab的配置 
+sudo gitlab-ctl reconfigure 
+
+# 重启gitlab服务 
+sudo gitlab-ctl restart 
+
+# 查看gitlab运行状态 
+sudo gitlab-ctl status 
+
+#停止gitlab服务 
+sudo gitlab-ctl stop 
+
+# 查看gitlab运行日志 
+sudo gitlab-ctl tail 
+
+# 停止相关数据连接服务 
+gitlab-ctl stop unicorn gitlab-ctl stop sidekiq
 ```
