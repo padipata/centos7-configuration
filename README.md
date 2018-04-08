@@ -1,6 +1,6 @@
 ### mac连接服务器
 
-```
+```shell
 // 切换到 root 权限下
 sudo -i
 
@@ -9,12 +9,12 @@ ssh root@xxx.xxx.xxx.xxx
 ```
 
 ### 修复 wget 漏洞
-```
+```shell
 yum update wget
 ```
 
 ### 测试硬盘速度
-```
+```shell
 // 写入速度
 dd if=/dev/zero of=./largefile bs=1M count=500
 // 清理内存（读取前必须进行，不然不准确）
@@ -24,7 +24,7 @@ dd if=./largefile of=/dev/null bs=4k
 ```
 
 ### 安装lnmp
-```
+```shell
 wget -c http://soft.vpser.net/lnmp/lnmp1.4.tar.gz
 
 tar zxf lnmp1.4.tar.gz
@@ -37,7 +37,7 @@ cd lnmp1.4
 ```
 
 ### 配置CA证书
-```
+```shell
 1. 从阿里云上申请免费的ca证书（有点隐秘，需要找到“一个域名”）
 
 2. 阿里的ca证书有一个 pem 文件和 key 文件，解压后，分别把名字改为 'ssl.pem'，'ssl.key'
@@ -53,20 +53,20 @@ root >> mv ssl.pem ssl2.pem
 ```
 
 ### inmp 新建站点
-```
+```shell
 lnpm vhost add
 //ssl文件放在 /home/ssl 目录下（ss.key、ssy.pem）
 ```
 
 ### lnmp 删除站点
-```
+```shell
 lnpm vhost del
 chattr -i 网站目录/.user.ini
 rm -rf 网站目录
 ```
 
 ### nginx 默认配置
-```
+```shell
 // 查看配置文件位置信息
 nginx -V
 
@@ -85,4 +85,50 @@ lnmp 默认网站配置文件：/usr/local/apache/conf/extra/httpd-vhosts.conf
 ![](files/53887871.png)
 
 
+### 安装 node 环境
 
++ 首先安装 nvm
+
+```shell
+cd /usr/local/src
+
+//下载安装包
+wget https://github.com/cnpm/nvm/archive/v0.23.0.tar.gz
+
+//解压
+tar zxvf v0.23.0.tar.gz
+rm -rf v0.23.0.tar.gz
+cd nvm-0.23.0
+
+//添加全局依赖
+./install.sh
+source ~/.bash_profile
+
+//查看 nvm 是否安装成功
+nvm
+```
+
++ 安装 node 
+
+```shell
+//查看 node 版本列表
+nvm ls-remote
+
+//安装，我这里选用 v8.9.0 版本
+nvm install v8.9.0
+
+//设置为默认版本
+nvm use node
+nvm alias default v8.9.0
+
+//查看 node 是否安装成功
+node --version
+npm --version
+```
+
++ 安装 cnpm
+
+```shell
+npm install -g cnpm --registry=https://registry.npm.taobao.org
+cnpm --version
+```
