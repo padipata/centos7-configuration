@@ -132,3 +132,45 @@ npm --version
 npm install -g cnpm --registry=https://registry.npm.taobao.org
 cnpm --version
 ```
+### 防火墙
+```shell
+//查看firewalld状态（dead为未开启）
+systemctl status firewalld
+
+//开启防火墙
+systemctl start firewalld
+
+//关闭防火墙
+systemctl stop firewalld
+```
+
+### 部署 gitlab（首先执行上面的开启防火墙）
+```shell
+// 安装配置ssh，配置防火墙
+sudo yum install -y curl policycoreutils-python openssh-server
+sudo systemctl enable sshd
+sudo systemctl start sshd
+sudo firewall-cmd --permanent --add-service=http
+sudo systemctl reload firewalld
+
+// 安装配置postfix，用于邮件通知
+sudo yum install postfix
+sudo systemctl enable postfix
+sudo systemctl start postfix
+
+// 安装 gitlab 包
+curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh | sudo bash
+sudo yum install gitlab-ce
+
+// 修改访问路径
+external_url 'http://ip_address:new-port'
+
+// 重置配置
+sudo gitlab-ctl reconfigure
+
+// 开启
+sudo gitlab-ctl restart
+
+// 允许9090端口访问
+sudo firewall-cmd --permanent --zone=public --add-port=9090/tcp
+```
