@@ -85,6 +85,16 @@ lnmp 默认网站配置文件：/usr/local/apache/conf/extra/httpd-vhosts.conf
 ![](files/53887871.png)
 
 
+### 重启 nginx
+```shell
+lnmp nginx reload
+//有时候报错：
+Reload service nginx... nginx: [error] open() "/usr/local/nginx/logs/nginx.pid" failed (2: No such file or directory) done
+
+//解决：
+/usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
+```
+
 ### 安装 node 环境
 
 + 首先安装 nvm
@@ -132,6 +142,7 @@ npm --version
 npm install -g cnpm --registry=https://registry.npm.taobao.org
 cnpm --version
 ```
+
 ### 防火墙
 ```shell
 //查看firewalld状态（dead为未开启）
@@ -163,13 +174,21 @@ curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/scrip
 sudo yum install gitlab-ce
 
 // 修改访问路径
+vim /etc/gitlab/gitlab.rb
 external_url 'http://ip_address:new-port'
 
 // 重置配置
 sudo gitlab-ctl reconfigure
+//往往会出现：ruby_block[supervise_redis_sleep] action run，会一直卡无法往下进行！
+1、按住CTRL+C强制结束；
+2、运行：sudo systemctl restart gitlab-runsvdir；
+3、再次执行：sudo gitlab-ctl reconfigure
+
+//查看当前配置信息
+vim /var/opt/gitlab/gitlab-rails/etc/gitlab.yml
 
 // 开启
-sudo gitlab-ctl restart
+sudo gitlab-ctl start
 
 // 允许9090端口访问
 sudo firewall-cmd --permanent --zone=public --add-port=9090/tcp
