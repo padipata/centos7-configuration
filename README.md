@@ -99,6 +99,11 @@ Reload service nginx... nginx: [error] open() "/usr/local/nginx/logs/nginx.pid" 
 /usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
 ```
 
+### 监听端口
+```shell
+netstat -inp | grep 80
+```
+
 ### 安装 node 环境
 
 + 首先安装 nvm
@@ -291,4 +296,55 @@ sudo firewall-cmd --permanent --zone=public --add-port=81/tcp
 #解决2：如果是阿里云或者腾讯云的服务器，需要登录上云平台，找到服务器下的安全组，添加安全组规则，如果不知道要配置的域名是什么，将授权对象设置为 0.0.0.0/0
 
 #解决3：可以通过访问80端口，再通过nginx反向代理到81端口，这样子就可以绕过防火墙。
+```
+
+### 部署 jenkins
++ 安装 jdk
+
+```shell
+yum -y list java*
+yum -y install java-1.7.0-openjdk.x86_64
+java
+```
++ 安装jenkins
+
+```shell
+#下载jenkins包
+wget http://pkg.jenkins-ci.org/redhat-stable/jenkins-2.7.3-1.1.noarch.rpm
+rpm -ivh jenkins-2.7.3-1.1.noarch.rpm
+
+#修改配置文件，默认端口为8080，如果不冲突则不需要修改
+vim /etc/sysconfig/jenkins 
+
+#启动jenkins服务
+service jenkins restart 
+
+#查看jenkins密码并复制
+vim /var/lib/jenkins/secrets/initialAdminPassword
+```
++ 部署站点
+
+```shell
+#部署ca证书
+#Linux : 
+cd /home & mkdir ssl-build
+#Mac :  
+scp -P 22 /Users/Mr.peng/Downloads/ca证书/ssl-build/ssl.pem root@39.104.92.85:/home/ssl-build
+scp -P 22 /Users/Mr.peng/Downloads/ca证书/ssl-build/ssl.key root@39.104.92.85:/home/ssl-build
+
+#新建站点
+lnmp vhost add ( build.yipage.cn )
+
+#修改站点配置
+#1.注释 index 指向
+#2.添加代理
+location ~ / {
+    proxy_pass http://127.0.0.1:8090
+}
+
+#测试
+nginx -t
+
+#重启
+lnmp nginx reload
 ```
