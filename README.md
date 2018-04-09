@@ -1,3 +1,7 @@
+# Record the process and pit points of centOS 7.4
+
+> 记录自己配置centOS 7.4 过程及坑点
+
 ### mac连接服务器
 
 ```shell
@@ -190,8 +194,8 @@ vim /var/opt/gitlab/gitlab-rails/etc/gitlab.yml
 // 开启
 sudo gitlab-ctl start
 
-# 允许4000端口访问
-sudo firewall-cmd --permanent --zone=public --add-port=4000/tcp
+# 允许81端口访问
+sudo firewall-cmd --permanent --zone=public --add-port=81/tcp
 ```
 
 ### 常用 gitlab 命令
@@ -230,4 +234,61 @@ kill -9 18777
 
 # 杀掉所有 gitlab 有关的文件
 find / -name gitlab | xargs rm -rf
+```
+
+### 配置 gitlab 访问站点
+```shell
+#新建站点
+lnmp vhost add (git.yipage.cn)
+
+#修改站点配置
+#1.注释 index 指向
+#2.添加反向代理
+location ~ / {
+    proxy_pass http://127.0.0.1:81
+}
+
+#测试
+nginx -t
+
+#重启
+lnmp nginx reload
+```
+
+### 监听服务器性能
+```shell
+#安装dstat
+yum -y install detat
+
+#全局监听
+dstat -antp 3
+
+#监听消耗cpu最高，内存消耗最大的进程，每3秒打印一次
+dstat -antp --top-cpu --top-mem 3
+```
+
+### 排查 TCP/IP 错误
+```shell
+#首先在服务器端请求网站
+curl http://xxx.xxx.xxx.xxx:81
+
+#服务器没问题，在客户端发起请求
+curl http://xxx.xxx.xxx.xxx:81
+
+#监听81端口下的网络请求包
+tcpdump 'tcp port 81'
+
+#若没有动静，说明客户端的请求没有到达服务器端，这个时候就很有可能是防火墙的问题。
+
+#解决1：如果是自配的服务器
+#查看firewalld状态（dead为未开启）
+systemctl status firewalld
+#开启防火墙
+systemctl start firewalld
+#手动打开81端口的防火墙
+sudo firewall-cmd --permanent --zone=public --add-port=81/tcp
+
+#解决2：如果是阿里云或者腾讯云的服务器，需要登录上云平台，找到服务器下的安全组，添加安全组规则，如果不知道要配置的域名是什么，将授权对象设置为 0.0.0.0/0
+
+#解决3：可以通过访问80端口，再通过nginx反向代理到81端口，这样子就可以绕过防火墙。
 ```
