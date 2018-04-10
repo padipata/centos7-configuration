@@ -107,6 +107,10 @@ ps -ef | grep nginx
 
 ### 监听端口
 ```shell
+#监听全部
+netstat -ntlp
+
+#监听81端口
 netstat -inp | grep 81
 ```
 
@@ -366,6 +370,9 @@ sudo service jenkins stop
 
 #卸载jenkins包
 sudo yum remove jenkins
+
+#删除偏好设置
+sudo rm -r /var/lib/jenkins
 ```
 
 
