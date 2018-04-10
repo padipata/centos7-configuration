@@ -316,8 +316,8 @@ java
 
 ```shell
 #下载jenkins包
-wget http://pkg.jenkins-ci.org/redhat-stable/jenkins-2.7.3-1.1.noarch.rpm
-rpm -ivh jenkins-2.7.3-1.1.noarch.rpm 
+wget http://pkg.jenkins-ci.org/redhat-stable/jenkins-2.107.1-1.1.noarch.rpm
+rpm -ivh jenkins-2.107.1-1.1.noarch.rpm
 
 #修改配置文件，默认端口为8080，如果不冲突则不需要修改
 vim /etc/sysconfig/jenkins
