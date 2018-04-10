@@ -348,3 +348,34 @@ nginx -t
 #重启
 lnmp nginx reload
 ```
+
+
+### 部署api文档管理系统
+
+```shell
+#添加域名解析
+api.yipage.cn
+
+#传输ca证书
+scp -P 22 /Users/Mr.peng/Downloads/ca证书/ssl-api/ssl.pem root@39.104.92.85:/home/ssl-api
+scp -P 22 /Users/Mr.peng/Downloads/ca证书/ssl-api/ssl.key root@39.104.92.85:/home/ssl-api
+
+#新建站点
+lnmp vhost add (api.yipage.cn)
+
+#下载eolinker开源版
+cd /home/wwwroot
+git clone https://github.com/padipata/eoapi.git  (3.5.0版本)
+cp -rf eoapi/. api.yipage.cn/
+
+#设置权限
+chmod 777 -R api.yipage.cn/
+
+#重启nginx
+nginx -t
+lnmp nginx reload
+
+#访问
+https://api.yipage.cn
+```
+
