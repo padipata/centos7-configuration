@@ -349,6 +349,16 @@ nginx -t
 lnmp nginx reload
 ```
 
++ 完全卸载 jenkins
+
+```shell
+#停止服务
+sudo service jenkins stop
+
+#卸载jenkins包
+sudo yum remove jenkins
+```
+
 
 ### 部署api文档管理系统
 
