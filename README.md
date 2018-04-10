@@ -313,7 +313,7 @@ sudo firewall-cmd --permanent --zone=public --add-port=81/tcp
 
 ```shell
 yum -y list java*
-yum -y install java-1.7.0-openjdk.x86_64
+yum -y install java-1.8.0-openjdk.x86_64
 java
 ```
 + 安装jenkins
