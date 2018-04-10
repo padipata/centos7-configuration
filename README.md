@@ -47,13 +47,13 @@ cd lnmp1.4
 2. 阿里的ca证书有一个 pem 文件和 key 文件，解压后，分别把名字改为 'ssl.pem'，'ssl.key'
 
 3. Mac将本地文件上传到服务器上（在服务器中新建 /home/ssl 文件夹）
- root >>  scp -P 22 /Users/Mr.peng/Downloads/214577254120798/ssl.key root@xxx.xxx.xxx.xxx:/home/ssl
- root >>  scp -P 22 /Users/Mr.peng/Downloads/214577254120798/ssl.pem root@xxx.xxx.xxx.xxx:/home/ssl
+	scp -P 22 /Users/Mr.peng/Downloads/214577254120798/ssl.key root@xxx.xxx.xxx.xxx:/home/ssl
+	scp -P 22 /Users/Mr.peng/Downloads/214577254120798/ssl.pem root@xxx.xxx.xxx.xxx:/home/ssl
 
 4. 当后期若需证书改名
-root >> cd /home/ssl
-root >> mv ssl.key ssl2.key
-root >> mv ssl.pem ssl2.pem
+	cd /home/ssl
+	mv ssl.key ssl2.key
+	mv ssl.pem ssl2.pem
 ```
 
 ### inmp 新建站点
