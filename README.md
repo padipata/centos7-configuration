@@ -405,3 +405,33 @@ lnmp nginx reload
 https://api.yipage.cn
 ```
 
+
+### MySQL配置
+```shell
+#启动服务
+/etc/init.d/mysql start
+
+#停止服务
+/etc/init.d/mysql stop
+
+#重启服务
+/etc/init.d/mysql restart
+
+#登录数据库
+mysql -uroot -p
+
+#绕过密码登录（需要先停止服务）
+mysqld_safe --user=mysql --skip-grant-tables --skip-networking &
+
+#连接数据库
+> use mysql; 
+
+#修改密码
+> update user set password=password("123456") where user="root";
+
+#刷新权限
+> flush privileges;
+
+#退出
+> quit;
+```
