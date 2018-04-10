@@ -99,9 +99,15 @@ Reload service nginx... nginx: [error] open() "/usr/local/nginx/logs/nginx.pid" 
 /usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
 ```
 
+
+### 查看 nginx 状态
+```shell
+ps -ef | grep nginx
+```
+
 ### 监听端口
 ```shell
-netstat -inp | grep 80
+netstat -inp | grep 81
 ```
 
 ### 安装 node 环境
