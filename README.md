@@ -280,6 +280,12 @@ dstat -antp 3
 
 #监听消耗cpu最高，内存消耗最大的进程，每3秒打印一次
 dstat -antp --top-cpu --top-mem 3
+
+#查看谁在占用内存资源
+dstat -g -l -m -s --top-mem
+
+#关于CPU资源损耗的数据
+dstat -c -y -l -proc-count --top-cpu
 ```
 
 ### 排查 TCP/IP 错误
