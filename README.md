@@ -310,14 +310,18 @@ java
 
 ```shell
 #下载jenkins包
-wget http://pkg.jenkins-ci.org/redhat-stable/jenkins-2.7.3-1.1.noarch.rpm
-rpm -ivh jenkins-2.7.3-1.1.noarch.rpm
+sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo 
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key 
+yum install jenkins  
 
 #修改配置文件，默认端口为8080，如果不冲突则不需要修改
-vim /etc/sysconfig/jenkins 
+vim /etc/sysconfig/jenkins
 
 #启动jenkins服务
-service jenkins restart 
+service jenkins start
+
+#重启jenkins
+service jenkins restart
 
 #查看jenkins密码并复制
 vim /var/lib/jenkins/secrets/initialAdminPassword
