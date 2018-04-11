@@ -454,3 +454,8 @@ vim mysql-bin.000001
 #使用lnmp修改root密码
 wget http://soft.vpser.net/lnmp/ext/reset_mysql_root_password.sh;sh reset_mysql_root_password.sh
 ```
+
+
+### 部署 Docker
++ [学习文档](https://yq.aliyun.com/articles/63035?utm_campaign=wenzhang&utm_medium=article&utm_source=QQ-qun&utm_content=m_7538) 
++ [专业书籍](files/docker.pdf)
