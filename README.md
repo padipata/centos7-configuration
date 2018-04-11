@@ -440,4 +440,12 @@ mysqld_safe --user=mysql --skip-grant-tables --skip-networking &
 
 #退出
 > quit;
+
+#查看mysql日志文件
+/usr/local/mysql/var/
+ll
+vim mysql-bin.000001
+
+#使用lnmp修改root密码
+wget http://soft.vpser.net/lnmp/ext/reset_mysql_root_password.sh;sh reset_mysql_root_password.sh
 ```
