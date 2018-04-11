@@ -17,6 +17,11 @@ ssh root@xxx.xxx.xxx.xxx
 yum update wget
 ```
 
+### 全局查找
+```shell
+whereis xxx
+```
+
 ### 测试硬盘速度
 ```shell
 // 写入速度
