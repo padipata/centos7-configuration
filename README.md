@@ -8,9 +8,30 @@
 <!-- TOC -->
 
 - [mac连接服务器](#mac连接服务器)
-- [修复 wget 漏洞](#修复wget漏洞)
+- [修复wget漏洞](#修复wget漏洞)
 - [全局查找](#全局查找)
 - [测试硬盘速度](#测试硬盘速度)
+- [安装lnmp](#安装lnmp)
+- [配置CA证书](#配置CA证书)
+- [lnmp新建站点](#lnmp新建站点)
+- [lnmp删除站点](#lnmp删除站点)
+- [nginx配置](#nginx配置)
+- [修改nginx配置](#修改nginx配置)
+- [重启nginx](#重启nginx)
+- [查看nginx状态](#查看nginx状态)
+- [监听端口](#监听端口)
+- [安装node环境](#安装node环境)
+- [防火墙配置](#防火墙配置)
+- [部署gitlab](#部署gitlab)
+- [常用gitlab命令](#常用gitlab命令)
+- [完全卸载gitlab](#完全卸载gitlab)
+- [配置gitlab](#配置gitlab)
+- [监听服务器性能](#监听服务器性能)
+- [排查TCP/IP错误](#排查TCP/IP错误)
+- [部署jenkins](#部署jenkins)
+- [部署api文档管理系统](#部署api文档管理系统)
+- [MySQL配置](#MySQL配置)
+- [部署Docker](#部署Docker)
 
 <!-- /TOC -->
 
@@ -24,7 +45,7 @@ sudo -i
 ssh root@xxx.xxx.xxx.xxx
 ```
 
-### 修复 wget 漏洞
+### 修复wget漏洞
 ```shell
 yum update wget
 ```
@@ -73,20 +94,20 @@ cd lnmp1.4
 	mv ssl.pem ssl2.pem
 ```
 
-### inmp 新建站点
+### lnmp新建站点
 ```shell
 lnpm vhost add
 //ssl文件放在 /home/ssl 目录下（ss.key、ssy.pem）
 ```
 
-### lnmp 删除站点
+### lnmp删除站点
 ```shell
 lnpm vhost del
 chattr -i 网站目录/.user.ini
 rm -rf 网站目录
 ```
 
-### nginx 默认配置
+### nginx配置
 ```shell
 // 查看配置文件位置信息
 nginx -V
@@ -101,12 +122,12 @@ lnmp 默认网站配置文件：/usr/local/apache/conf/extra/httpd-vhosts.conf
 /home/wwwroot/default2（已关闭，防止被攻击）
 ```
 
-### 修改 nginx 配置
+### 修改nginx配置
 ![](files/53648748.png)
 ![](files/53887871.png)
 
 
-### 重启 nginx
+### 重启nginx
 ```shell
 lnmp nginx reload
 //有时候报错：
@@ -117,7 +138,7 @@ Reload service nginx... nginx: [error] open() "/usr/local/nginx/logs/nginx.pid" 
 ```
 
 
-### 查看 nginx 状态
+### 查看nginx状态
 ```shell
 ps -ef | grep nginx
 ```
@@ -131,7 +152,7 @@ netstat -ntlp
 netstat -inp | grep 81
 ```
 
-### 安装 node 环境
+### 安装node环境
 
 + 首先安装 nvm
 
@@ -179,7 +200,7 @@ npm install -g cnpm --registry=https://registry.npm.taobao.org
 cnpm --version
 ```
 
-### 防火墙
+### 防火墙配置
 ```shell
 //查看firewalld状态（dead为未开启）
 systemctl status firewalld
@@ -191,7 +212,9 @@ systemctl start firewalld
 systemctl stop firewalld
 ```
 
-### 部署 gitlab（首先执行上面的开启防火墙）
+### 部署gitlab
+> 首先执行上面的开启防火墙
+
 ```shell
 // 安装配置ssh，配置防火墙
 sudo yum install -y curl policycoreutils-python openssh-server
@@ -230,7 +253,7 @@ sudo gitlab-ctl start
 sudo firewall-cmd --permanent --zone=public --add-port=81/tcp
 ```
 
-### 常用 gitlab 命令
+### 常用gitlab命令
 ```shell
 # 重新应用gitlab的配置 
 sudo gitlab-ctl reconfigure 
@@ -250,7 +273,7 @@ sudo gitlab-ctl tail
 # 停止相关数据连接服务 
 gitlab-ctl stop unicorn gitlab-ctl stop sidekiq
 ```
-### 完全卸载 gitlab
+### 完全卸载gitlab
 ```shell
 # 停止进程
 sudo gitlab-ctl stop
@@ -268,7 +291,7 @@ kill -9 18777
 find / -name gitlab | xargs rm -rf
 ```
 
-### 配置 gitlab 访问站点
+### 配置gitlab
 ```shell
 #新建站点
 lnmp vhost add (git.yipage.cn)
@@ -305,7 +328,7 @@ dstat -g -l -m -s --top-mem
 dstat -c -y -l -proc-count --top-cpu
 ```
 
-### 排查 TCP/IP 错误
+### 排查TCP/IP错误
 ```shell
 #首先在服务器端请求网站
 curl http://xxx.xxx.xxx.xxx:81
@@ -331,7 +354,7 @@ sudo firewall-cmd --permanent --zone=public --add-port=81/tcp
 #解决3：可以通过访问80端口，再通过nginx反向代理到81端口，这样子就可以绕过防火墙。
 ```
 
-### 部署 jenkins
+### 部署jenkins
 + 安装 jdk
 
 ```shell
@@ -468,6 +491,6 @@ wget http://soft.vpser.net/lnmp/ext/reset_mysql_root_password.sh;sh reset_mysql_
 ```
 
 
-### 部署 Docker
+### 部署Docker
 + [学习文档](https://yq.aliyun.com/articles/63035?utm_campaign=wenzhang&utm_medium=article&utm_source=QQ-qun&utm_content=m_7538) 
 + [专业书籍](files/docker.pdf)
