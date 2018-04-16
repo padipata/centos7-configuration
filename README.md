@@ -15,10 +15,17 @@
 - [配置CA证书](#配置CA证书)
 - [lnmp新建站点](#lnmp新建站点)
 - [lnmp删除站点](#lnmp删除站点)
-- [nginx配置](#nginx配置)
-- [修改nginx配置](#修改nginx配置)
-- [重启nginx](#重启nginx)
-- [查看nginx状态](#查看nginx状态)
+- [nginx基础配置](#nginx基础配置)
+	- [配置站点](#配置站点)
+	- [重启nginx](#重启nginx)
+	- [查看nginx状态](#查看nginx状态)
+	- [跨域问题](#跨域问题)
+- [nginx性能优化](#nginx性能优化)
+	- [内容缓存](#内容缓存)
+	- [Gzip压缩](#Gzip压缩)
+	- [打开文件缓存](#打开文件缓存)
+	- [SSL缓存](#SSL缓存)
+	- [上游Keepalive](#上游Keepalive)
 - [监听端口](#监听端口)
 - [安装node环境](#安装node环境)
 - [防火墙配置](#防火墙配置)
@@ -109,7 +116,12 @@ chattr -i 网站目录/.user.ini
 rm -rf 网站目录
 ```
 
-### nginx配置
+## nginx基础配置
+![](files/53648748.png)
+![](files/53887871.png)
+
+### 配置站点
+
 ```shell
 // 查看配置文件位置信息
 nginx -V
@@ -124,11 +136,6 @@ lnmp 默认网站配置文件：/usr/local/apache/conf/extra/httpd-vhosts.conf
 /home/wwwroot/default2（已关闭，防止被攻击）
 ```
 
-### 修改nginx配置
-![](files/53648748.png)
-![](files/53887871.png)
-
-
 ### 重启nginx
 ```shell
 lnmp nginx reload
@@ -139,10 +146,106 @@ Reload service nginx... nginx: [error] open() "/usr/local/nginx/logs/nginx.pid" 
 /usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
 ```
 
-
 ### 查看nginx状态
 ```shell
 ps -ef | grep nginx
+```
+
+### 跨域问题
+
+在工作中，有时候会遇到一些接口不支持跨域，这时候可以简单的添加add_headers来支持cors跨域。配置如下：
+
+```nginx
+server {
+  listen 80;
+  server_name api.xxx.com;
+    
+  add_header 'Access-Control-Allow-Origin' '*';
+  add_header 'Access-Control-Allow-Credentials' 'true';
+  add_header 'Access-Control-Allow-Methods' 'GET,POST,HEAD';
+
+  location / {
+    proxy_pass http://127.0.0.1:3000;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host  $http_host;    
+  } 
+}
+```
+
+## nginx性能优化
+
+### 内容缓存
+
+允许浏览器基本上永久地缓存静态内容。 Nginx将为您设置Expires和Cache-Control头信息。
+
+```nginx
+location /static {
+    root /data;
+    expires max;
+}
+```
+
+如果要求浏览器永远不会缓存响应（例如用于跟踪请求），请使用-1。
+
+```nginx
+location = /empty.gif {
+    empty_gif;
+    expires -1;
+}
+```
+
+### Gzip压缩
+
+```nginx
+gzip  on;
+gzip_buffers 16 8k;
+gzip_comp_level 6;
+gzip_http_version 1.1;
+gzip_min_length 256;
+gzip_proxied any;
+gzip_vary on;
+gzip_types
+    text/xml application/xml application/atom+xml application/rss+xml application/xhtml+xml image/svg+xml
+    text/javascript application/javascript application/x-javascript
+    text/x-json application/json application/x-web-app-manifest+json
+    text/css text/plain text/x-component
+    font/opentype application/x-font-ttf application/vnd.ms-fontobject
+    image/x-icon;
+gzip_disable  "msie6";
+```
+
+### 打开文件缓存
+
+```nginx
+open_file_cache max=1000 inactive=20s;
+open_file_cache_valid 30s;
+open_file_cache_min_uses 2;
+open_file_cache_errors on;
+```
+
+### SSL缓存
+
+```nginx
+ssl_session_cache shared:SSL:10m;
+ssl_session_timeout 10m;
+```
+
+### 上游Keepalive
+
+```nginx
+upstream backend {
+    server 127.0.0.1:8080;
+    keepalive 32;
+}
+server {
+    ...
+    location /api/ {
+        proxy_pass http://backend;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+    }
+}
 ```
 
 ### 监听端口
