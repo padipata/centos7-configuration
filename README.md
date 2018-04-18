@@ -612,15 +612,20 @@ wget http://soft.vpser.net/lnmp/ext/reset_mysql_root_password.sh;sh reset_mysql_
 
 ### 配置CI/CL
 + jenkins 配置
+
 ![](files/pull.png)
 
 + gitlab配置
 进入 webhooks 配置页面
+
 ![](files/gitlab.png)
 
 配置 jenkins 项目构建路径
+
 ![](files/gitlab2.png)
+
 进行测试
+
 ![](files/gitlab3.png)
 
 + 注意事项
