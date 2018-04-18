@@ -602,12 +602,19 @@ wget http://soft.vpser.net/lnmp/ext/reset_mysql_root_password.sh;sh reset_mysql_
 ### 前提
 + 环境
 > jenkins 
+
 > gitlab
+
 + 安全组
+
 > 阿里云配置jenkins的安全组规则（我这里是打开8089端口）
+
 + jenkins环境
+
 > 安装Gitlab Hook Plugin、GitLab Plugin、GitLab插件
+
 > 在全局安全配置里面关闭用户提交权限
+
 > 关闭禁用跨域访问
 
 ### 配置CI/CL
