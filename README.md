@@ -38,10 +38,12 @@
 - [部署jenkins](#部署jenkins)
 - [部署api文档管理系统](#部署api文档管理系统)
 - [MySQL配置](#MySQL配置)
+- [配置前端工程CI/CL](#配置前端工程CI/CL)
+	- [前提](#前提)
+	- [配置CI/CL](#配置CI/CL)
 - [部署Docker](#部署Docker)
 
 <!-- /TOC -->
-
 ---
 
 ### mac连接服务器
@@ -595,6 +597,39 @@ vim mysql-bin.000001
 wget http://soft.vpser.net/lnmp/ext/reset_mysql_root_password.sh;sh reset_mysql_root_password.sh
 ```
 
+
+## 配置前端工程CI/CL
+### 前提
++ 环境
+> jenkins 
+> gitlab
++ 安全组
+> 阿里云配置jenkins的安全组规则（我这里是打开8089端口）
++ jenkins环境
+> 安装Gitlab Hook Plugin、GitLab Plugin、GitLab插件
+> 在全局安全配置里面关闭用户提交权限
+> 关闭禁用跨域访问
+
+### 配置CI/CL
++ jenkins 配置
+![](files/pull.png)
+
++ gitlab配置
+进入 webhooks 配置页面
+![](files/gitlab.png)
+
+配置 jenkins 项目构建路径
+![](files/gitlab2.png)
+进行测试
+![](files/gitlab3.png)
+
++ 注意事项
+1. jenkins 可能出现找不到 GitLab Plugin 插件的情况，其实 GitLab 插件就是 GitLab Plugin ，安装即可。
+2. gitlab webhooks 测试的时候可能会出现 403 的情况：
+    1. url 书写错误，没有指向服务器
+    2. jenkins 中的禁止跨域访问没有关掉
+    3. jenkins 中的用户操作权限没有关掉
+    4. 如果等待时间过长没反应，一般都是因为防火墙没有开启该端口，自配服务器需要手动开启端口，阿里云用户需要到安全组里面配置安全组规则
 
 ### 部署Docker
 + [学习文档](https://yq.aliyun.com/articles/63035?utm_campaign=wenzhang&utm_medium=article&utm_source=QQ-qun&utm_content=m_7538) 
