@@ -42,6 +42,9 @@
 	- [前提](#前提)
 	- [配置CI/CL](#配置cicl)
 - [部署Docker](#部署docker)
+- [部署idea激活服务](#部署idea激活服务)
+	- [Ubuntu开机启动](#ubuntu开机启动)
+	- [CentOS开机启动](#centos)
 
 <!-- /TOC -->
 ---
@@ -643,6 +646,81 @@ wget http://soft.vpser.net/lnmp/ext/reset_mysql_root_password.sh;sh reset_mysql_
     3. jenkins 中的用户操作权限没有关掉
     4. 如果等待时间过长没反应，一般都是因为防火墙没有开启该端口，自配服务器需要手动开启端口，阿里云用户需要到安全组里面配置安全组规则
 
-### 部署Docker
+### 部署Docker（之后补上）
 + [学习文档](https://yq.aliyun.com/articles/63035?utm_campaign=wenzhang&utm_medium=article&utm_source=QQ-qun&utm_content=m_7538) 
 + [专业书籍](files/docker.pdf)
+
+## 部署idea激活服务
+
+> 各系统的激活工具下载地址：http://idea.lanyus.com
+
+### 开机启动
+
+- [rc.local](#rc.local)
+- [init.d](#init.d)
+
+
+rc.local和init.d都可以操作开机启动项
+
+<a name="rc.local"></a>
+## rc.local
+
+rc.local文件头部/bin/sh修改为/bin/bash, 注意: 一定要将命令添加在exit 0之前。里面可以直接写命令或者执行Shell脚本文件sh。
+
+> 如果是执行sh文件，那么要赋予执行权限sudo chmod +x xxx.sh，然后启动时加上sudo sh xxx.sh
+
+```
+chmod +x /etc/rc.local
+
+exec 2> /var/log/rc.local # send stderr from rc.local to a log file  
+exec 1>&2 # send stdout to the same log file  
+set -x # tell sh to display commands before execution
+exec /root/IntelliJIDEALicenseServer_linux_amd64 &> /dev/null &
+```
+
+<a name="init.d"></a>
+## init.d
+
+书写符合LSB-style规范的shell
+
+```shell
+vim /etc/init.d/active
+
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides: test.com
+# Required-Start: $local_fs $network
+# Required-Stop: $local_fs
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: active service
+# Description: active service daemon
+### END INIT INFO
+/root/IntelliJIDEALicenseServer_linux_amd64 &> /dev/null &
+```
+
+保存上述脚本
+
+什么是LSB风格? `man chkconfig` 里面由例子说明,一下为摘录
+
+chkconfig also supports LSB-style init stanzas, and will apply them in preference to "chkconfig:" lines where available. A LSB stanza looks like:
+
+### Ubuntu开机启动
+
+```shell
+update-rc.d active.sh enable
+update-rc.d active.sh disable
+```
+
+
+### CentOS
+
+通过设置`chkconfig`操作服务启动
+
+```shell
+chkconfig --add active
+chkconfig --list
+active 0:off	1:off	2:on	3:on	4:on	5:on	6:off
+
+chkconfig --del active
+```
