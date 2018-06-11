@@ -37,11 +37,13 @@
 - [排查TCP/IP错误](#排查tcpip错误)
 - [部署jenkins](#部署jenkins)
 - [部署api文档管理系统](#部署api文档管理系统)
-- [MySQL配置](#mysql配置)
+- [MySQL](#mysql)
+    - [mysql 基础](#mysql基础)
+    - [mysql 找回密码](#mysql找回密码) 
 - [配置前端工程CI/CL](#配置前端工程cicl)
 	- [前提](#前提)
 	- [配置CI/CL](#配置cicl)
-- [部署Docker](#部署docker)
+- [部署Docker](#部署-docker)
 - [部署idea激活服务](#部署idea激活服务)
 	- [Ubuntu开机启动](#ubuntu开机启动)
 	- [CentOS开机启动](#centos)
@@ -561,8 +563,33 @@ lnmp nginx reload
 https://api.yipage.cn
 ```
 
+## MySQL
 
-### MySQL配置
+### mysql 基础
+```shell
+### 连接数据库
+/usr/local/mysql/bin/mysql root -u p
+
+### 显示所有数据库
+show databases;
+
+### 进入数据库
+use api;(数据库名)
+
+### 显示数据表
+show tables;
+
+### 进入数据表
+describe user;(表名)
+
+### 查询当前表名
+select * from user;
+
+### 删除某条数据
+DELETE FROM user WHERE email='yipage@163.com';
+```
+
+### mysql 找回密码
 ```shell
 #启动服务
 /etc/init.d/mysql start
@@ -599,7 +626,6 @@ vim mysql-bin.000001
 #使用lnmp修改root密码
 wget http://soft.vpser.net/lnmp/ext/reset_mysql_root_password.sh;sh reset_mysql_root_password.sh
 ```
-
 
 ## 配置前端工程CI/CL
 ### 前提
@@ -646,9 +672,8 @@ wget http://soft.vpser.net/lnmp/ext/reset_mysql_root_password.sh;sh reset_mysql_
     3. jenkins 中的用户操作权限没有关掉
     4. 如果等待时间过长没反应，一般都是因为防火墙没有开启该端口，自配服务器需要手动开启端口，阿里云用户需要到安全组里面配置安全组规则
 
-### 部署Docker（之后补上）
-+ [学习文档](https://yq.aliyun.com/articles/63035?utm_campaign=wenzhang&utm_medium=article&utm_source=QQ-qun&utm_content=m_7538) 
-+ [专业书籍](files/docker.pdf)
+### 部署Docker
++ [Docker 学习笔记](https://github.com/padipata/Docker-Notes) 
 
 ## 部署idea激活服务
 
@@ -724,3 +749,4 @@ active 0:off	1:off	2:on	3:on	4:on	5:on	6:off
 
 chkconfig --del active
 ```
+
