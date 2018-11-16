@@ -627,7 +627,7 @@ vim mysql-bin.000001
 wget http://soft.vpser.net/lnmp/ext/reset_mysql_root_password.sh;sh reset_mysql_root_password.sh
 ```
 
-## 配置前端工程CI/CL
+## 配置项目持续集成
 ### 前提
 + 环境
 > jenkins 
@@ -646,7 +646,7 @@ wget http://soft.vpser.net/lnmp/ext/reset_mysql_root_password.sh;sh reset_mysql_
 
 > 关闭禁用跨域访问
 
-### 配置CI/CL
+### 配置前端项目CI/CL
 + jenkins 配置
 
 ![](files/pull.png)
@@ -671,6 +671,48 @@ wget http://soft.vpser.net/lnmp/ext/reset_mysql_root_password.sh;sh reset_mysql_
     2. jenkins 中的禁止跨域访问没有关掉
     3. jenkins 中的用户操作权限没有关掉
     4. 如果等待时间过长没反应，一般都是因为防火墙没有开启该端口，自配服务器需要手动开启端口，阿里云用户需要到安全组里面配置安全组规则
+
+### 配置java项目持续集成
+
+> 因为java项目需要放置tomcat中才可以运行，因此需要对文件进行移动，Jenkins默认是什么读写权限的，因此首先需要修改Jenkins的权限。
+
+修改Jenkins配置文件
+
++ 打开配置文件
+
+```
+vim /etc/sysconfig/jenkins
+```
+
++ 修改$JENKINS_USER，并去掉当前行注释
+
+```
+$JENKINS_USER="root"
+```
+
++ 修改Jenkins相关文件夹用户权限
+
+```
+chown -R root:root /var/lib/jenkins
+chown -R root:root /var/cache/jenkins
+chown -R root:root /var/log/jenkins
+```
+
++ ***重启Jenkins服务并检查运行Jenkins的用户是否已经切换为root***
+
++ 重启Jenkins（若是其他方式安装的jenkins则重启方式略不同）
+
+```
+service jenkins restart
+```
+
++ 查看Jenkins进程所属用户
+
+```
+ps -ef | grep jenkins
+```
+
+> 若显示为root用户，则表示修改完成
 
 ### 部署Docker
 + [Docker 学习笔记](https://github.com/padipata/Docker-Notes) 
